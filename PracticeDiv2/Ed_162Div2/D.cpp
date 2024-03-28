@@ -1,13 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+void solve() {
+
+}
+
 int main() {
-    int t;
-    cin >> t;
+    int t; cin >> t;
 
     while (t--) {
-        int ans = 0;
-
-        cout << ans << endl;
+        solve();
     }
+
+    return 0;
 }
