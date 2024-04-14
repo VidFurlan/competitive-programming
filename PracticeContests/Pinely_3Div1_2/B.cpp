@@ -16,12 +16,16 @@ void solve() {
     for (int &num : nums)
         cin >> num;
 
-    int maxDiff = 0;
-    for (int i = 1; i < n; i++) {
-        maxDiff = max(maxDiff, nums[i] - nums[i-1]);
+    for (int i = 1; i < 10000000; i++) {
+        set<int> m;
+        for (int j = 0; j < n && m.size() <= 2; j++)
+            m.insert(nums[i]);
+        
+        if (m.size() == 2) {
+            cout << i << endl;
+            return;
+        }
     }
-
-    cout <<
 }
 
 int main() {
