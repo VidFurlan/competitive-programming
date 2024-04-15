@@ -1,7 +1,4 @@
 #include <bits/stdc++.h>
-#include <climits>
-#include <iostream>
-#include <vector>
 using namespace std;
 
 #define MOD 1e9 + 7
@@ -11,27 +8,20 @@ using namespace std;
 #define pii pair<int, int>
 
 void solve() {
-    int n; cin >> n;
-    vector<int> a(n);
-    for (int &i : a) 
-        cin >> i;
-    vector<int> dp(n + 1, INT_MAX);
-    dp[n] = 0;
+    ll n, x, p;
+    cin >> n >> x >> p;
 
-    for (int i = n - 1; i >= 0; i--) {
-        int p = a[i] + i + 1, dp_i;
-        
-        if (p > n)
-            dp_i = n + 1;
-        else if (p == n)
-            dp_i = 0;
-        else 
-            dp_i = dp[p];
-
-        dp[i] = min(dp[i + 1] + 1, dp_i); 
+    p = min(p, n * 2);
+    if (x != 0)
+        x = n - x;
+    for (ll f = 1; f <= p; f++) {
+        if ((f * (f + 1) / 2) % n == x) {
+            cout << "YES\n";
+            return;
+        }
     }
 
-    cout << dp[0] << endl;
+    cout << "NO\n";
 }
 
 int main() {
