@@ -1,11 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define MOD 1e9 + 7
-
 #define ll long long
 #define pll pair<long, long>
 #define pii pair<int, int>
+
+const ll MOD = 1e9 + 7;
 
 void solve() {
 
