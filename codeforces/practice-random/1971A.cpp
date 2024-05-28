@@ -1,19 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define ll long long
-#define pll pair<long, long>
-#define pii pair<int, int>
-
-#define FOR(x,to) for(x=0;x<(to);x++)
-#define FORR(x,arr) for(auto& x:arr)
-#define FORR2(x,y,arr) for(auto& [x,y]:arr)
-#define ALL(a) (a.begin()),(a.end())
+using ll = long long;
+using pll = pair<long, long>;
+using pii = pair<int, int>;
 
 const ll MOD = 1e9 + 7;
+const ll LL_INF = 1e18;
 
 void solve() {
-
+    int x, y; cin >> x >> y;
+    cout << min(x, y) << " " << max(x, y) << endl;
 }
 
 int main() {
