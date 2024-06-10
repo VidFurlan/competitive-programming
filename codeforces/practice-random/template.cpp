@@ -2,7 +2,7 @@
 using namespace std;
 
 #define ll long long
-#define pll pair<long, long>
+#define pll pair<ll, ll>
 #define pii pair<int, int>
 
 #define FOR(x,to) for(x=0;x<(to);x++)
