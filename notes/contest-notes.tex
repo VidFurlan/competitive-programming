@@ -1,0 +1,83 @@
+\documentclass{article}
+\usepackage{titlesec}
+
+\title{Competitive Programming Notes}
+\author{Vid Furlan}
+\date{2024}
+
+\titleformat{\section}[hang]{\normalfont\Large\bfseries}{\thesection.}{0pt}{}
+\titleformat{\subsection}[hang]{\normalfont\large\bfseries}{\thesubsection.}{0pt}{}
+
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{4cm}
+        
+        \Huge
+        \textbf{Competitive Programming Notebook}
+        
+        \vspace{0.5cm}
+        \LARGE
+        - Contest Notes -
+        
+        \vspace{1.5cm}
+        
+        2024 Revision 0.0\\
+        \vspace{0.5cm}
+        Vid Furlan / vidfurlan
+    \end{center}
+\end{titlepage}
+
+\renewcommand{\contentsname}{\Large Index}
+\tableofcontents
+\addcontentsline{toc}{section}{Index}
+
+\newpage
+
+\section{Introduction}
+This is the introduction section. You can write an overview of your competitive programming notes here.
+
+\newpage
+
+\section{STL - Standard Template Library}
+\subsection{Vector}
+Vector is a dynamic array. It is similar to an array, but with the ability to resize itself automatically when it grows or shrinks.
+
+\subsubsection{General Syntax:}
+\begin{verbatim}
+// 1D vector
+vector<data_type> v1(size, value);
+
+// 2D vector
+vector<vector<data_type>> v2(row, vector<data_type>(col, value));
+
+// Insertion O(1)
+v.push_back(value);
+
+// Deletion O(1)
+v.pop_back();
+\end{verbatim}
+
+\subsubsection{Useful Functions:}
+\begin{verbatim}
+// Sort vector in ascending order O(nlogn)
+sort(v.begin(), v.end());
+
+// Sort vector in descending order O(nlogn)
+sort(v.rbegin(), v.rend());
+
+// Reverse vector O(n)
+reverse(v.begin(), v.end());
+\end{verbatim}
+
+\subsection{Stack}
+\subsection{Queue}
+\subsection{Deque}
+\subsection{Priority Queue}
+\subsection{Set and Multiset}
+\subsection{Map and Multimap}
+
+\end{document}
+
