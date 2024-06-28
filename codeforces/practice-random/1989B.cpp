@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+#define pll pair<ll, ll>
+#define pii pair<int, int>
+
+#define FOR(x,to) for(x=0;x<(to);x++)
+#define FORR(x,arr) for(auto& x:arr)
+#define FORR2(x,y,arr) for(auto& [x,y]:arr)
+#define ALL(a) (a.begin()),(a.end())
+
+const ll MOD = 1e9 + 7;
+
+void solve() {
+    string a, b; cin >> a >> b;
+    int n = a.size(), m = b.size();
+    int ans = n + m;
+    
+    for (int i = 0; i < m; i++) {
+        int j = i;
+        for (char c : a)
+            if (j < m && b[j] == c)
+                j++;
+        ans = min(ans, n + m - (j - i));
+    }
+
+    cout << ans << endl;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false); 
+    cin.tie(NULL); 
+
+    int t; cin >> t;
+
+    while (t--) {
+        solve();
+    }
+
+    return 0;
+}
