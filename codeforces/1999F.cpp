@@ -25,33 +25,26 @@ const int MOD = 1e9 + 7;
 const int INF = 1e9;
 const ll LLINF = 1e18;
 
-const int MAXN = 70005;
+const int MAXN = 200005;
 
-ll fac[MAXN + 1];
-ll inv[MAXN + 1];
-
-ll exp(ll x, ll n, ll m) {
-	x %= m;
-	ll res = 1;
-	while (n > 0) {
-		if (n % 2 == 1) { res = res * x % m; }
-		x = x * x % m;
-		n /= 2;
-	}
-	return res;
+int fac[MAXN], ifac[MAXN];
+ 
+int bp(int a, int b) {
+  if (!b) return 1;
+  int r = bp(a, b / 2);
+  if (b & 1) return r * 1ll * r % MOD * a % MOD;
+  return r * 1ll * r % MOD;
+}
+ 
+int ncr(int n, int r) {
+  if (n < r) return 0;
+  return fac[n] * 1ll * ifac[r] % MOD * ifac[n - r] % MOD;
 }
 
 void factorial() {
-	fac[0] = 1;
-	for (ll i = 1; i <= MAXN; i++) { fac[i] = (fac[i - 1] % MOD) * i % MOD; }
+    fac[0] = ifac[0] = 1;
+    for (int i = 1; i < MAXN; i++) fac[i] = fac[i - 1] * 1ll * i % MOD, ifac[i] = bp(fac[i], MOD - 2);
 }
-
-void inverses() {
-	inv[MAXN] = exp(fac[MAXN], MOD - 2, MOD);
-	for (ll i = MAXN; i >= 1; i--) { inv[i - 1] = (inv[i] % MOD) * i % MOD; }
-}
-
-ll choose(ll n, ll r) { return (fac[n] % MOD) * inv[r] % MOD * inv[n - r] % MOD; }
 
 void solve() {
     ll n, k; cin >> n >> k;
@@ -59,10 +52,8 @@ void solve() {
     FORR(x, a) cin >> x;
     ll one = count(ALL(a), 1);
     ll ans = 0;
-    for (ll i = (k-1)/2; i >= 0; i--) {
-        if (k - i > one || i > n - one) continue;
-        ans += ((choose(one, k - i) % MOD) * (choose(n - one, i) % MOD)) % MOD;
-        ans %= MOD;
+    for (ll i = (k+1)/2; i <= k; i++) {
+        ans = (ans + ncr(one, i) * 1ll * ncr(n - one, k - i) % MOD) % MOD;
     }
     cout << ans << endl;
 }
@@ -75,7 +66,6 @@ int main() {
     solve();
 #else
     factorial();
-    inverses();
     int t;
     cin >> t;
     while (t--) {
