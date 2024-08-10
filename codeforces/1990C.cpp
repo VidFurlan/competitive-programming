@@ -1,4 +1,8 @@
-#include <bits/stdc++.h>
+#include <bitset>
+#include <iostream>
+#include <vector>
+#include <map>
+#include <set>
 using namespace std;
 #define SINGLE_TEST 0
 
@@ -26,29 +30,29 @@ const int INF = 1e9;
 const ll LLINF = 1e18;
 
 void solve() {
-    int n, ans = 0; cin >> n;
+    ll n, ans = 0; cin >> n;
     vi a(n); 
-    FORR(x, a) cin >> x;
+    FORR(x, a) { cin >> x; ans += x; }
 
-    map<int, int> cnt;
-    set<int> s;
+    bitset<200002> s;
 
-    int z = 0;
-    while (z < n) {
-        z = 0;
+    FOR(i, 2) {
+        int mx = 0;
         FOR(i, n) {
-            ans += a[i];
-            if (a[i] != 0) cnt[a[i]]++;
+            if (s[a[i]]) {
+                mx = max(mx, a[i]);
+            }
 
-            if (cnt[a[i]] == 2) s.insert(a[i]);
-            else if (cnt[a[i]] == 1) s.erase(a[i]);
-
-            if (s.empty()) { a[i] = 0; z++; }
-            else a[i] = *s.rbegin();
+            s[a[i]] = 1;
+            a[i] = mx;
         }
-        s.clear();
-        cnt.clear();
+        s.reset();
+        if (i == 0)
+            FORR(x, a) ans += x;
+        else 
+            FOR(i, n) ans += (n - i) * 1ll * a[i];
     }
+
     cout << ans << endl;
 }
 
