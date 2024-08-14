@@ -54,6 +54,7 @@ void solve() {
 
             if (cnt == x + y - 1) {
                 cnt++;
+                if (cnt > k) break;
                 dp2[cnt] = min(dp2[cnt], cost);
             }
         }
