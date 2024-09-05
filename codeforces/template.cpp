@@ -3,6 +3,8 @@ using namespace std;
 #define SINGLE_TEST 0
 
 typedef long long ll;
+typedef unsigned long long ull; 
+typedef long double ld;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 typedef vector<int> vi;
@@ -18,8 +20,10 @@ typedef vector<vl> vvl;
 #define ALL(a) (a.begin()), (a.end())
 #define RALL(a) (a.rbegin()), (a.rend())
 #define REVERSE(v) reverse(ALL(v))
+#define SZ(x) (int)(x).size()
 #define fi first
 #define se second
+#define debug(x) cerr << #x << " = " << (x) << endl
 
 const int MOD = 1e9 + 7;
 const int INF = 1e9;
