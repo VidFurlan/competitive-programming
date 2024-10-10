@@ -1,4 +1,7 @@
-#include <bits/stdc++.h>
+#include <cassert>
+#include <cstdint>
+#include <utility>
+#include <iostream>
 
 inline int32_t modpow(uint_fast64_t x, uint64_t k, int32_t MOD) {
     assert (/* 0 <= x and */ x < (uint_fast64_t)MOD);
@@ -61,5 +64,3 @@ template <int32_t MOD> mint<MOD> operator * (int64_t value, mint<MOD> n) { retur
 template <int32_t MOD> mint<MOD> operator / (int64_t value, mint<MOD> n) { return mint<MOD>(value) / n; }
 template <int32_t MOD> std::istream & operator >> (std::istream & in, mint<MOD> & n) { int64_t value; in >> value; n = value; return in; }
 template <int32_t MOD> std::ostream & operator << (std::ostream & out, mint<MOD> n) { return out << n.value; }
-
-
