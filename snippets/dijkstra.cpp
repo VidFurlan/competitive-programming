@@ -9,7 +9,7 @@ template<> constexpr int inf<int> = 1e9;
 template<> constexpr long long inf<long long> = 1e18;
 template<typename T>
 std::vector<T> dijkstra(int s, std::vector<std::vector<std::pair<int,T>>> adj){
-    int n=sz(adj);
+    int n=adj.size();
     std::vector<T> dis(n, inf<T>);
     std::vector<int> vis(n);
     std::priority_queue<std::pair<T,int>, std::vector<std::pair<T,int>>, std::greater<std::pair<T,int>>> pq;
