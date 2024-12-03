@@ -60,6 +60,8 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
+    auto start = std::chrono::high_resolution_clock::now();
+
 #if SINGLE_TEST
     solve();
 #else
@@ -69,6 +71,12 @@ int main() {
         solve();
     }
 #endif
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+
+    std::cout << "Time: " << duration.count() << " ms" << std::endl;
+
     debug(ans1);
     debug(ans2);
 

@@ -51,16 +51,16 @@ void solve() {
             string s = line.substr(i, 7);
             if (s == "don't()") {
                 f = 0;
-                cout << "don't()" << endl;
+                //cout << "don't()" << endl;
             }
             s = line.substr(i, 4);
             if (s == "do()") {
                 f = 1;
-                cout << "do()" << endl;
+                //cout << "do()" << endl;
             }
         }
         string s = line.substr(i, 4);
-        cout << s << endl;
+        //cout << s << endl;
         if (s == "mul(") {
             i += 4;
             int num1 = 0;
@@ -88,6 +88,8 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
+    auto start = std::chrono::high_resolution_clock::now();
+
 #if SINGLE_TEST
     solve();
 #else
@@ -97,6 +99,12 @@ int main() {
         solve();
     }
 #endif
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+
+    std::cout << "Time: " << duration.count() << " ms" << std::endl;
+
     debug(ans1);
     debug(ans2);
 
