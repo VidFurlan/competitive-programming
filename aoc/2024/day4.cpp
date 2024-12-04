@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include <cctype>
+#include <chrono>
 #include "helper_elf.hpp"
 using namespace std;
 #define SINGLE_TEST 1
@@ -31,7 +31,7 @@ const int MOD = 1e9 + 7;
 const int INF = 1e9;
 const ll LLINF = 1e18;
 
-const string fileName = "day3.in";
+const string fileName = "day4.in";
 ifstream file(fileName);
 Elf elf = Elf(file);
 
@@ -39,46 +39,60 @@ ll ans1 = 0;
 ll ans2 = 0;
 
 void solve() {
-    vector<string> lines = elf.readStrings();
-    string line;
-    FORR(l, lines) line += l;
-    getline(file, line);
-    int n = SZ(line);
-    bool f = 1;
+    vector<string> in = elf.readStrings();
+    int n = SZ(in), m = SZ(in[0]);
+    FOR(i, 3) {
+        in.push_back("");
+        FOR(j, m) in[n + i] += '.';
+    }
+    FORR(x, in) {
+        FOR(i, 3) x += '.';
+    }
     FOR(i, n) {
-        if (i+4 >= n) break;
-        if (i+7 < n) {
-            string s = line.substr(i, 7);
-            if (s == "don't()") {
-                f = 0;
-                //cout << "don't()" << endl;
+        FOR(j, m) {
+            vector<string> a;
+            a.push_back("");
+            FOR(k, 4) {
+                a[0] += in[i + k][j];
             }
-            s = line.substr(i, 4);
-            if (s == "do()") {
-                f = 1;
-                //cout << "do()" << endl;
+            a.push_back("");
+            FOR(k, 4) {
+                a[1] += in[i][j + k];
             }
-        }
-        string s = line.substr(i, 4);
-        //cout << s << endl;
-        if (s == "mul(") {
-            i += 4;
-            int num1 = 0;
-            int num2 = 0;
-            while (i < n && isdigit(line[i])) {
-                num1 = num1 * 10 + (line[i] - '0');
-                i++;
+            a.push_back("");
+            a.push_back("");
+            FOR(k, 4) {
+                a[2] += in[i + k][j + k];
+                a[3] += in[i + k][j + 3 - k];
             }
-            if (line[i] == ',') {
-                i++;
-                while (i < n && isdigit(line[i])) {
-                    num2 = num2 * 10 + (line[i] - '0');
-                    i++;
+            FOR(x, 4) {
+                if (a[x] == "XMAS") {
+                    ans1++;
+                }
+                REVERSE(a[x]);
+                if (a[x] == "XMAS") {
+                    ans1++;
                 }
             }
-            if (line[i] == ')') {
-                ans1 += num1 * num2;
-                ans2 += num1 * num2 * f;
+            
+            a.push_back("");
+            a.push_back("");
+            FOR(k, 3) {
+                a[4] += in[i + k][j + k];
+                a[5] += in[i + k][j + 2 - k];
+            } 
+            int ok = 0;
+            REP(x, 4, 5) {
+                if (a[x] == "MAS") {
+                    ok++;
+                }
+                REVERSE(a[x]);
+                if (a[x] == "MAS") {
+                    ok++;
+                }
+            }
+            if (ok == 2) {
+                ans2++;
             }
         }
     }

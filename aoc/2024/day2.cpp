@@ -102,9 +102,10 @@ int main() {
 #endif
 
     auto stop = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+    auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start);
 
-    std::cout << "Time: " << duration.count() << " ms" << std::endl;
+    std::cout << "Time: " << duration.count() / 1e6 << " ms" << std::endl;
+
 
     debug(ans1);
     debug(ans2);
