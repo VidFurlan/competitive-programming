@@ -38,9 +38,30 @@ Elf elf = Elf(file);
 ll ans1 = 0;
 ll ans2 = 0;
 
+bool dfs1(vl &a, int i, ll &tar, ll cur) {
+    if (i == SZ(a)) return cur == tar;
+    if (cur > tar) return false;
+    return dfs1(a, i + 1, tar, cur + a[i]) || dfs1(a, i + 1, tar, cur * a[i]);
+} 
+
+bool dfs2(vl &a, int i, ll &tar, ll cur) {
+    if (i == SZ(a)) return cur == tar;
+    if (cur > tar || cur < 0) return false;
+    return dfs2(a, i + 1, tar, cur + a[i]) || dfs2(a, i + 1, tar, cur * a[i]) || dfs2(a, i + 1, tar, cur * pow(10, log10(a[i]) + 1) + a[i]);
+}
+
 void solve() {
     vvl in = elf.readLong2D();
     FORR(a, in) {
+        if (dfs1(a, 1, a[0], 0)) {
+            ans1 += a[0];
+        }
+        if (dfs2(a, 1, a[0], 0)) {
+            ans2 += a[0];
+        }
+    }
+    // Bfs but 10x slower than dfs
+    /*FORR(a, in) {
         ll tar = a[0];
         unordered_set<ll> s;
         s.insert(0ll);
@@ -79,7 +100,7 @@ void solve() {
         if (s.find(tar) != s.end()) {
             ans2 += tar;
         }
-    }
+    }*/
 }
 
 int main() {
