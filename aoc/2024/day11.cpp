@@ -41,13 +41,13 @@ ll ans1 = 0;
 ull ans2 = 0;
 
 int mxD = 25;
-map<pair<string, int>, ull> dp;
+unordered_map<string, ull> dp;
 ull dfs(string num, int d) {
     if (d == mxD) {
         return 1;
     }
-    if (dp[{num, d}]) {
-        return dp[{num, d}];
+    if (dp[num + " " + to_string(d)]) {
+        return dp[num + " " + to_string(d)];
     }
     ull res = 0;
     if (num.size() % 2 == 0) {
@@ -60,7 +60,7 @@ ull dfs(string num, int d) {
     else {
         res += dfs(to_string(stoll(num) * 2024), d+1);
     }
-    return dp[{num, d}] = res;
+    return dp[num + " " + to_string(d)] = res;
 }
 
 void solve() {
