@@ -35,7 +35,7 @@ const string fileName = "day17.in";
 ifstream file(fileName);
 Elf elf = Elf(file);
 
-ll ans1 = 0;
+string ans1;
 ll ans2 = 0;
 
 ll combo(ll operand, ll a, ll b, ll c) {
@@ -46,28 +46,10 @@ ll combo(ll operand, ll a, ll b, ll c) {
     return operand;
 }
 
-void solve() {
-    vector<string> in = elf.readStrings();
-    ll a = stoll(in[2]);
-    ll b = stoll(in[5]);
-    ll c = stoll(in[8]);
-
-    vl v;
-    string s = in[10];
-    ll cur = 0;
-    FOR(i, SZ(s)) {
-        if (s[i] == ',') {
-            v.push_back(cur);
-            cur = 0;
-        }
-        else {
-            cur = cur * 10 + (s[i] - '0');
-        }
-    }
-    v.push_back(cur);
-
+vl compute(vl v, ll a, ll b, ll c) {
     int n = SZ(v);
-    string ans;
+    vl res;
+    ans1 = "";
     for (int i = 0; i < n;) {
         ll op = v[i], num = v[i + 1];
         i += 2;
@@ -90,7 +72,8 @@ void solve() {
             b ^= c;
         }
         else if (op == 5) {
-            ans += to_string(combo(num, a, b, c) % 8) + ",";
+            ans1 += to_string(combo(num, a, b, c) % 8) + ",";
+            res.push_back(combo(num, a, b, c) % 8);
         }
         else if (op == 6) {
             b = a / (1ll << combo(num, a, b, c));
@@ -99,8 +82,53 @@ void solve() {
             c = a / (1ll << combo(num, a, b, c));
         }
     }
-    ans.pop_back();
-    cout << ans << endl;
+    ans1.pop_back();
+    return res;
+}
+
+ll magic(vl v, ll n, ll cur) {
+    for (ll i = 0; i < 8; i++) {
+        ll newCur = (cur << 3) + i;
+        vl newV = compute(v, newCur, 0, 0);
+        vl prog = vl(v.begin() + n, v.end());
+
+        if (equal(ALL(newV), ALL(prog))) {
+            if (n == 0) {
+                return newCur;
+            }
+            ll res = magic(v, n - 1, newCur);
+            if (res != -1) {
+                return res;
+            }
+        }
+    }
+
+    return -1;
+}
+
+void solve() {
+    vector<string> in = elf.readStrings();
+    ll a = stoll(in[2]);
+    ll b = stoll(in[5]);
+    ll c = stoll(in[8]);
+
+    vl v;
+    string s = in[10];
+    ll cur = 0;
+    FOR(i, SZ(s)) {
+        if (s[i] == ',') {
+            v.push_back(cur);
+            cur = 0;
+        }
+        else {
+            cur = cur * 10 + (s[i] - '0');
+        }
+    }
+    v.push_back(cur);
+
+    ans2 = magic(v, SZ(v) - 1, 0);
+
+    compute(v, a, b, c);
 }
 
 int main() {
