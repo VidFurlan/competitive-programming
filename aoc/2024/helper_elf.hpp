@@ -57,4 +57,13 @@ public:
         }
         return a;
     }
+
+    std::vector<std::string> readLines() {
+        std::vector<std::string> a;
+        std::string x;
+        while (std::getline(*is, x)) {
+            a.push_back(x);
+        }
+        return a;
+    }
 };
