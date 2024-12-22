@@ -34,6 +34,15 @@ public:
         return a;
     }
 
+    std::vector<long long> readLongs() {
+        std::vector<long long> a;
+        int x;
+        while ((*is) >> x) {
+            a.push_back(x);
+        }
+        return a;
+    }
+
     std::vector<std::vector<long long>> readLong2D() {
         std::vector<std::vector<long long>> a;
         std::string line;
