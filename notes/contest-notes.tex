@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{titlesec}
 
-\title{Competitive Programming Notes}
+\title{Competitive Programming Contest Notes}
 \author{Vid Furlan}
 \date{2024}
 
@@ -12,72 +12,294 @@
 \begin{document}
 
 \begin{titlepage}
-    \begin{center}
-        \vspace*{4cm}
-        
-        \Huge
-        \textbf{Competitive Programming Notebook}
-        
-        \vspace{0.5cm}
-        \LARGE
-        - Contest Notes -
-        
-        \vspace{1.5cm}
-        
-        2024 Revision 0.0\\
-        \vspace{0.5cm}
-        Vid Furlan / vidfurlan
-    \end{center}
+	\begin{center}
+		\vspace*{5cm}
+
+		\huge
+        \textbf{Competitive Programming Contest Notes}
+
+		\Large
+		\vspace{7.0cm}
+		Vid Furlan
+
+        \normalsize
+		\vspace{0.5cm}
+		Revision: 0.0\\
+
+	\end{center}
 \end{titlepage}
 
 \renewcommand{\contentsname}{\Large Index}
 \tableofcontents
 \addcontentsline{toc}{section}{Index}
+\vspace{2.0cm}
+
+\section{Time Complexity}
+\begin{center}
+    \begin{tabular}{ | l | l | }
+    \hline
+    \textbf{Input} & \textbf{Required Time Complexity} \\
+    $n < 10$ & $O(n!)$ \\
+    $n < 20$ & $O(2^n)$ \\
+    $n < 500$ & $O(n^3)$ \\
+    $n < 5000$ & $O(n^2)$ \\
+    $n < 10^6$ & $O(n \log n)$ or $O(n)$ \\
+    $n$ is large & $O(\log n)$ or $O(1)$ \\
+    \hline
+    \end{tabular}
+\end{center}
 
 \newpage
 
-\section{Introduction}
-This is the introduction section. You can write an overview of your competitive programming notes here.
+\section{Graphs}
+\subsection{Dijkstra's Algorithm O($n + m \log n$)}
 
-\newpage
+\textbf{Dijkstra's Algorithm} is used to find the shortest path from a single node to all the other nodes in a weighted graph.
 
-\section{STL - Standard Template Library}
-\subsection{Vector}
-Vector is a dynamic array. It is similar to an array, but with the ability to resize itself automatically when it grows or shrinks.
+\noindent\rule{\textwidth}{1pt}
 
-\subsubsection{General Syntax:}
 \begin{verbatim}
-// 1D vector
-vector<data_type> v1(size, value);
+vector<long long> dist(n, LLONG_MAX);
+using T = pair<long long, int>; // {distance, node}
+priority_queue<T, vector<T>, greater<T>> pq;
 
-// 2D vector
-vector<vector<data_type>> v2(row, vector<data_type>(col, value));
+int start = 0;
+dist[start] = 0;
+pq.push({0, start});
 
-// Insertion O(1)
-v.push_back(value);
-
-// Deletion O(1)
-v.pop_back();
+while (!pq.empty()) {
+    const auto [cdist, node] = pq.top();
+    pq.pop();
+    if (cdist != dist[node]) { continue; }
+    for (const pair<int, int> &i : neighbors[node]) {
+        // If we can reach a neighbouring node faster,
+        // we update its minimum distance
+        if (cdist + i.second < dist[i.first]) {
+            dist[i.first] = cdist + i.second;
+            pq.push({dist[i.first], i.first});
+        }
+    }
+}
 \end{verbatim}
 
-\subsubsection{Useful Functions:}
+
+
+\subsection{Floyd-Warshall Algorithm O($n^3$)}
+
+\textbf{Floyd-Warshall Algorithm} is used to find the shortest path between all pairs of nodes in a weighted graph.
+
+\noindent\rule{\textwidth}{1pt}
+
 \begin{verbatim}
-// Sort vector in ascending order O(nlogn)
-sort(v.begin(), v.end());
-
-// Sort vector in descending order O(nlogn)
-sort(v.rbegin(), v.rend());
-
-// Reverse vector O(n)
-reverse(v.begin(), v.end());
+// Min distance is initialized to INF or edge weights
+for (int k = 0; k < n; k++) {
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            long long new_dist = min_dist[i][k] + min_dist[k][j];
+            if (new_dist < min_dist[i][j]) {
+                min_dist[i][j] = min_dist[j][i] = new_dist;
+            }
+        }
+    }
+}
 \end{verbatim}
 
-\subsection{Stack}
-\subsection{Queue}
-\subsection{Deque}
-\subsection{Priority Queue}
-\subsection{Set and Multiset}
-\subsection{Map and Multimap}
+\pagebreak
+
+\subsection{Cycle Detection O($m$)}
+
+\textbf{Cycle Detection} is used to find cycles in a graph using DFS. 
+
+\noindent\rule{\textwidth}{1pt}
+
+\begin{verbatim}
+int n;
+vector<vector<int>> adj;
+vector<bool> visited;
+vector<int> parent;
+int cycle_start, cycle_end;
+bool dfs(int v, int par) { // passing vertex and its parent vertex
+    visited[v] = true;
+    for (int u : adj[v]) {
+        if (u == par) continue; // skipping edge to parent vertex
+        if (visited[u]) {
+            cycle_end = v;
+            cycle_start = u;
+            return true;
+        }
+        parent[u] = v;
+        if (dfs(u, parent[u]))
+            return true;
+    }
+    return false;
+}
+void find_cycle() {
+    visited.assign(n, false);
+    parent.assign(n, -1);
+    cycle_start = -1;
+    for (int v = 0; v < n; v++) {
+        if (!visited[v] && dfs(v, parent[v]))
+            break;
+    }
+    if (cycle_start == -1) {
+        cout << "Acyclic" << endl;
+    } else {
+        vector<int> cycle;
+        cycle.push_back(cycle_start);
+        for (int v = cycle_end; v != cycle_start; v = parent[v])
+            cycle.push_back(v);
+        cycle.push_back(cycle_start);
+        cout << "Cycle found: ";
+        for (int v : cycle) cout << v << " ";
+        cout << endl;
+    }
+}
+\end{verbatim}
+
+\pagebreak
+
+\subsection{Finding Bridges O($n + m$)}
+
+\textbf{Finding Bridges}: An edge in an undirected graph is a bridge if removing it disconnects the graph.
+
+\noindent\rule{\textwidth}{1pt}
+
+\begin{verbatim}
+void IS_BRIDGE(int v,int to); // some function to process the found bridge
+int n; // number of nodes
+vector<vector<int>> adj; // adjacency list of graph
+
+vector<bool> visited;
+vector<int> tin, low;
+int timer;
+
+void dfs(int v, int p = -1) {
+    visited[v] = true;
+    tin[v] = low[v] = timer++;
+    bool parent_skipped = false;
+    for (int to : adj[v]) {
+        if (to == p && !parent_skipped) {
+            parent_skipped = true;
+            continue;
+        }
+        if (visited[to]) {
+            low[v] = min(low[v], tin[to]);
+        } else {
+            dfs(to, v);
+            low[v] = min(low[v], low[to]);
+            if (low[to] > tin[v])
+                IS_BRIDGE(v, to);
+        }
+    }
+}
+
+void find_bridges() {
+    timer = 0;
+    visited.assign(n, false);
+    tin.assign(n, -1);
+    low.assign(n, -1);
+    for (int i = 0; i < n; ++i) {
+        if (!visited[i]) dfs(i);
+    }
+}
+\end{verbatim}
+
+\pagebreak
+
+\section{Math}
+
+\subsection{Sieve of Eratosthenes O($n \log \log n$)}
+
+\textbf{Sieve of Eratosthenes} is used to find all prime numbers up to a given limit.
+
+\noindent\rule{\textwidth}{1pt}
+
+\begin{verbatim}
+int n;
+vector<bool> is_prime(n+1, true);
+is_prime[0] = is_prime[1] = false;
+for (int i = 2; i * i <= n; i++) {
+    if (is_prime[i]) {
+        for (int j = i * i; j <= n; j += i)
+            is_prime[j] = false;
+    }
+}
+\end{verbatim}
+
+\section{Modular Arithmetic}
+
+\subsection{Modular Exponentiation O($\log m$)}
+
+\textbf{Modular Exponentiation} is used to calculate $a^b \% mod$.
+
+\noindent\rule{\textwidth}{1pt}
+
+\begin{verbatim}
+int modPow(int a, int b, int m){
+    if (b == 0) {
+        return 1;
+    }
+    if ((b & 1) == 0) {
+        int x = fastPower(a, b>>1, m);
+        x = x % m;
+        return (x*x) % m;
+    }
+    return (a * modPow(a, b-1, m)) % m;
+}
+\end{verbatim}
+
+\subsection{Modular Inverse O($\log m$)}
+
+\textbf{Modular Inverse} calculates $a^{-1} \% mod$.
+
+\noindent\rule{\textwidth}{1pt}
+
+\begin{verbatim}
+int inv(int a) {
+    return a <= 1 ? a : m - (long long)(m/a) * inv(m % a) % m;
+}
+\end{verbatim}
+
+\pagebreak
+
+\section{Data Structures}
+
+\subsection{Union Find O($\alpha(n)$)}
+
+\textbf{Union Find} is used to find connected components in a graph.
+
+\noindent\rule{\textwidth}{1pt}
+
+\begin{verbatim}
+class DisjointSets {
+    private:
+    vector<int> parents;
+    vector<int> sizes;
+
+    public:
+    DisjointSets(int size) : parents(size), sizes(size, 1) {
+        for (int i = 0; i < size; i++) { parents[i] = i; }
+    }
+
+    // @return the "representative" node in x's component
+    int find(int x) { 
+        return parents[x] == x ? 
+        x : (parents[x] = find(parents[x])); 
+    }
+
+    // @return whether the merge changed connectivity
+    bool unite(int x, int y) {
+        int x_root = find(x);
+        int y_root = find(y);
+        if (x_root == y_root) { return false; }
+        if (sizes[x_root] < sizes[y_root]) { swap(x_root, y_root); }
+        sizes[x_root] += sizes[y_root];
+        parents[y_root] = x_root;
+        return true;
+    }
+    // @return whether x and y are in the same connected component
+    bool connected(int x, int y) { return find(x) == find(y); }
+};
+\end{verbatim}
 
 \end{document}
-
